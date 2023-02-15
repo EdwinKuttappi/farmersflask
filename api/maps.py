@@ -2,9 +2,6 @@ import requests
 import random 
 
 
-<html>
-</html>
-
 print("Please choose your first airport! (The Departure Flight)")
 location1 = input()
 
@@ -26,10 +23,3 @@ response = requests.request("GET", url, headers=headers)
 
 print(response.text)
 
-for maps in map()
-	while 
-
-
-
-<script>
-const Maps
