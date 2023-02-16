@@ -8,39 +8,36 @@ from sqlalchemy.exc import IntegrityError
 
 
 class Maps(db.Model):
-    __tablename__ = 'facts'  # table industry is plural, class industry is singular
+    __tablename__ = 'distance' 
 
-    # Define the User schema with "vars" from object
     id = db.Column(db.Integer, primary_key=True)
-    _car = db.Column(db.String(255), unique=True, nullable=False)
-    _industry = db.Column(db.String(255), unique=False, nullable=False)
+    _location1 = db.Column(db.String(255), unique=True, nullable=False)
+    _location2 = db.Column(db.String(255), unique=False, nullable=False)
     
     # Defines a relationship between User record and Notes table, one-to-many (one user to many notes)
     # constructor of a User object, initializes the instance variables within object (self)
-    def __init__(self, car, industry):
+    def __init__(self, depart, arrive):
 
-        self._industry = industry   # variables with self prefix become part of the object, 
-        self._car = car
-
-    @property
-    def industry(self):
-        return self._industry
-    
-    # a setter function, allows industry to be updated after initial object creation
-    @industry.setter
-    def industry(self, industry):
-        self._industry = industry
-
-    
+        self._location2 = arrive   # variables with self prefix become part of the object, 
+        self._location1 = depart
 
     @property
-    def car(self):
-        return self._car
+    def arrive(self):
+        return self._location2
     
-    # a setter function, allows industry to be updated after initial object creation
-    @car.setter
-    def car(self, car):
-        self._car = car
+    @arrive.setter
+    def arrive(self, arrive):
+        self._location2 = arrive
+
+    
+
+    @property
+    def depart(self):
+        return self._location1
+    
+    @depart.setter
+    def depart(self, depart):
+        self._location1 = depart
 
     def __str__(self):
         return json.dumps(self.read())
@@ -60,19 +57,19 @@ class Maps(db.Model):
     def read(self):
         return {
             "id": self.id,
-            "industry": self.industry,
-            "car": self.car,
+            "arrive": self.arrive,
+            "depart": self.depart,
             
         }
 
-    # CRUD update: updates user industry, knew, phone
+    # CRUD update: updates user arrive, knew, phone
     # returns self
-    def update(self, industry="", car=""):
+    def update(self, arrive="", depart=""):
         """only updates values with length"""
-        if len(industry) > 0:
-            self.industry = industry
-        if len(car) > 0:
-            self.car = car
+        if len(arrive) > 0:
+            self.arrive = arrive
+        if len(depart) > 0:
+            self.depart = depart
         db.session.commit()
         return self
 
@@ -91,16 +88,16 @@ def initFacts():
         """Create database and tables"""
         db.create_all()
         """Tester data for table"""
-        u1 = Facts( industry='Thomas Edison', car='Tesla Model y', )
-        u2 = Facts( industry='Nicholas Tesla', car='Pagani', )
-        u3 = Facts( industry='Alexander Graham Bell', car='Ferrari', )
-        u4 = Facts( industry='Eli Whitney', car='Lexus', )
-        u5 = Facts( industry='John Mortensen', car='NIO', )
+        u1 = Maps( arrive='FCO', depart='LAX', )
+        u2 = Maps( arrive='CDG', depart='JFK', )
+        u3 = Maps( arrive='SEA', depart='LHR', )
+        u4 = Maps( arrive='SIN', depart='DXB', )
+        u5 = Maps( arrive='ATL', depart='SFO', )
 
-        facts = [u1, u2, u3, u4, u5]
+        maps = [u1, u2, u3, u4, u5]
 
         """Builds sample user/note(s) data"""
-        for fact in facts:
+        for map in maps:
             try:
                 '''add a few 1 to 4 notes per user'''
                 fact.create()
