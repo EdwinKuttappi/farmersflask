@@ -1,25 +1,53 @@
-import requests
-import random 
+from flask import Blueprint, request, jsonify
+from flask_restful import Api, Resource # used for REST API building
+from datetime import datetime
 
+from model.maps import maps
 
-print("Please choose your first airport! (The Departure Flight)")
-location1 = input()
+fact_api = Blueprint('fact_api', __name__,
+                   url_prefix='/api/facts')
 
-print("Please choose your second airport! (The Arrival Flight)")
-location2 = input()
+# API docs https://flask-restful.readthedocs.io/en/latest/api.html
+api = Api(fact_api)
 
-locations = [location1, location2]
+class FactsAPI:        
+    class _Create(Resource):
+        def post(self):
+            ''' Read data for json body '''
+            body = request.get_json()
+            
+            ''' Avoid garbage in, error checking '''
+            # validate industry
+            industry = body.get('industry')
+            if industry is None or len(industry) < 2:
+                return {'message': f'industry is missing, or is less than 2 characters'}, 210
+            # validate uid
+            car = body.get('car')
+            if car is None or len(car) < 2:
+                return {'message': f'User ID is missing, or is less than 2 characters'}, 210
+            # look for knew and dob
 
+            ''' #1: Key code block, setup USER OBJECT '''
+            uo = Facts(industry=industry, 
+                      car=car)
+            
+            ''' Additional garbage error checking '''
+            
+            ''' #2: Key Code block to add user to database '''
+            # create user in database
+            fact = uo.create()
+            # success returns json of user
+            if fact:
+                return jsonify(fact.read())
+            # failure returns error
+            return {'message': f'Processed {industry}, either a format error or User ID is duplicate'}, 210
 
+    class _Read(Resource):
+        def get(self):
+            facts = Facts.query.all()    # read/extract all users from database
+            json_ready = [fact.read() for fact in facts]  # prepare output in json
+            return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
 
-url = "https://maptiles.p.rapidapi.com/es/map/v1/3/4/2.png"
-
-headers = {
-	"X-RapidAPI-Key": "get-key",
-	"X-RapidAPI-Host": "maptiles.p.rapidapi.com"
-}
-
-response = requests.request("GET", url, headers=headers)
-
-print(response.text)
-
+    # building RESTapi endpoint
+    api.add_resource(_Create, '/create')
+    api.add_resource(_Read, '/')
