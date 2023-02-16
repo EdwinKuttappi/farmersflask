@@ -1,0 +1,57 @@
+from flask import Blueprint, request, jsonify
+from flask_restful import Api, Resource # used for REST API building
+from datetime import datetime
+
+from model.users import FdPost
+
+fd_api = Blueprint('fd_api', __name__,
+                   url_prefix='/api/fd')
+
+# API docs https://flask-restful.readthedocs.io/en/latest/api.html
+api = Api(fd_api)
+
+class FdPostAPI:        
+    class _Create(Resource):
+        def post(self):
+            ''' Read data for json body '''
+            body = request.get_json()
+            
+            ''' Avoid garbage in, error checking '''
+            # validate name
+            title = body.get('title')
+            if title is None or len(title) < 2 or len(title) > 30:
+                return {'message': f'Name is missing, or is less than 2 characters, or is more than 30 characters'}, 210
+            # validate uid
+            text = body.get('text')
+            if text is None or len(text) < 2 or len(text) > 800:
+                return {'message': f'User ID is missing, or is less than 2 characters, or is more than 800 characters'}, 210
+            # look for password and dob
+            imageURL = body.get('imageURL')
+
+            ''' #1: Key code block, setup USER OBJECT '''
+            uo = FdPost(title=title, text=text)
+            
+            ''' Additional garbage error checking '''
+            # set password if provided
+            if imageURL is not None:
+                uo.set_password(imageURL)
+
+            
+            ''' #2: Key Code block to add user to database '''
+            # create user in database
+            user = uo.create()
+            # success returns json of user
+            if user:
+                return jsonify(user.read())
+            # failure returns error
+            return {'message': f'Processed {title}, format error'}, 210
+
+    class _Read(Resource):
+        def get(self):
+            users = FdPost.query.all()    # read/extract all users from database
+            json_ready = [user.read() for user in users]  # prepare output in json
+            return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
+
+    # building RESTapi endpoint
+    api.add_resource(_Create, '/create')
+    api.add_resource(_Read, '/')
