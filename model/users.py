@@ -274,6 +274,7 @@ class FdPost(db.Model):
    # returns dictionary
    def read(self):
        return {
+           "id": self.id,
            "title": self.title,
            "text": self.text,
            "imageURL": self.imageURL
@@ -311,7 +312,7 @@ def initUsers():
        db.create_all()
        """Tester data for table"""
        u1 = FdPost(title="New York City", text="Fortnite", imageURL="amomh.com")
-       u2 = FdPost(title="San Diego", text="Among", imageURL="fort.com")
+       u2 = FdPost(title="S", text="Among", imageURL="fort.com")
 
 
        users = [u1, u2]
@@ -324,6 +325,6 @@ def initUsers():
            except IntegrityError:
                '''fails with bad or duplicate data'''
                db.session.remove()
-               print(f"Records exist, duplicate email, or error: {user.uid}")
+               print(f"Duplicate or error: {user.uid}")
           
 
