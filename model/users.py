@@ -202,7 +202,7 @@ class User(db.Model):
 
 
 class FdPost(db.Model):
-   __tablename__ = 'fdposts'  # table name is plural, class name is singular
+   __tablename__ = 'fdposts2'  # table name is plural, class name is singular
 
 
    # Define the User schema with "vars" from object
@@ -311,8 +311,8 @@ def initUsers():
        db.init_app(app)
        db.create_all()
        """Tester data for table"""
-       u1 = FdPost(title="New York City", text="Fortnite", imageURL="amomh.com")
-       u2 = FdPost(title="S", text="Among", imageURL="fort.com")
+       u1 = FdPost(title="New York City", text="There's a lot of big big buildings here. Really liked the Empire State Building. I also enjoyed the bay, but the water was pretty cold. There were also a lot of big stores and tourist attractions. I would go again and it I do recommend it", imageURL="TEMP")
+       u2 = FdPost(title="Bahamas", text="Very fun islands. I would recommend going to Nassau. It was a really good experience overall.", imageURL="TEMP")
 
 
        users = [u1, u2]
