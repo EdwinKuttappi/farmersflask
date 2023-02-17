@@ -14,6 +14,7 @@ from api.joke import joke_api # Blueprint import api definition
 #from api.user import user_api # Blueprint import api definition
 from api.fd import fd_api
 from api.airport import airport_api # Blueprint import api definition
+from api.maps import mapsapi
 
 # setup App pages
 from projects.projects import app_projects # Blueprint directory import projects definition

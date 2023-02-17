@@ -29,8 +29,6 @@ class Maps(db.Model):
     def arrive(self, arrive):
         self._location2 = arrive
 
-    
-
     @property
     def depart(self):
         return self._location1
