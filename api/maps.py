@@ -51,7 +51,7 @@ class FdPostAPI(Resource):
             users = FdPost.query.all()    # read/extract all users from database
             json_ready = [user.read() for user in users]  # prepare output in json
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
-
+    # comment
     # building RESTapi endpoint
     api.add_resource(_Create, '/post')
     api.add_resource(_Read, '/')
