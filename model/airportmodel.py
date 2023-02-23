@@ -86,7 +86,7 @@ class AirportPost(db.Model):
 
 
 # Builds working data for testing
-def initUsers():
+def initAirports():
     with app.app_context():
         """Create database and tables"""
         
