@@ -1,5 +1,5 @@
 """ database dependencies to support sqliteDB examples """
-
+import os
 import json
 from __init__ import app, db
 from sqlalchemy.exc import IntegrityError
