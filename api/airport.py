@@ -43,5 +43,5 @@ class AirportPostAPI(Resource):
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
 
     # building RESTapi endpoint
-    api.add_resource(_Create, '/post')
+    api.add_resource(_Create, '/create')
     api.add_resource(_Read, '/')
