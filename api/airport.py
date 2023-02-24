@@ -15,7 +15,6 @@ class AirportPostAPI(Resource):
             ''' Read data for json body '''
             body = request.get_json()
             
-            ''' Avoid garbage in, error checking '''
             # validate name
             city = body.get('city')
            
@@ -23,9 +22,6 @@ class AirportPostAPI(Resource):
    
             ''' #1: Key code block, setup USER OBJECT '''
             uo = AirportPost(city=city, airport=airport)
-            
-            ''' Additional garbage error checking '''
-
             
             ''' #2: Key Code block to add user to database '''
             # create user in database
