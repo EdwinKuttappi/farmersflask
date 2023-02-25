@@ -92,10 +92,10 @@ def initAirports():
         
         db.create_all()
         """Tester data for table"""
-        # u1 = AirportPost(city="Paris", airport="Paris-Le Bourget")
-        # u2 = AirportPost(city="Berlin", airport="Berlin-Tegel")
+        u1 = AirportPost(city="Paris", airport="Paris-Le Bourget")
+        u2 = AirportPost(city="Berlin", airport="Berlin-Tegel")
 
-        # users = [u1, u2]
+        users = [u1, u2]
         users = []
 
         """Builds sample user/note(s) data"""

@@ -17,7 +17,6 @@ class AirportPostAPI(Resource):
             
             # validate name
             city = body.get('city')
-           
             airport = body.get('airport')
    
             ''' #1: Key code block, setup USER OBJECT '''
@@ -38,6 +37,22 @@ class AirportPostAPI(Resource):
             json_ready = [user.read() for user in users]  # prepare output in json
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
 
+    # class _Delete(Resource):
+    #     def delete(self):
+    #         ''' Read data for json body '''
+    #         body = request.get_json()
+    #         city = body.get('city')
+
+    #         users = AirportPost.query.all()    # read/extract all users from database
+            
+    #         # Find the city in the database and call the delete
+    #         if city in users:
+    #           user.delete()
+            
+    #         # delete operation does not return any value
+    #         return
+        
     # building RESTapi endpoint
     api.add_resource(_Create, '/create')
     api.add_resource(_Read, '/')
+    # api.add_resource(_Delete, '/delete')
