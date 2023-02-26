@@ -37,22 +37,25 @@ class AirportPostAPI(Resource):
             json_ready = [user.read() for user in users]  # prepare output in json
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
 
-    # class _Delete(Resource):
-    #     def delete(self):
-    #         ''' Read data for json body '''
-    #         body = request.get_json()
-    #         city = body.get('city')
+    class _Delete(Resource):
+        def delete(self):
+            ''' Read data for json body '''
+            body = request.get_json()
+            city = body.get('city')
 
-    #         users = AirportPost.query.all()    # read/extract all users from database
+            airports = AirportPost.query.all()    # read/extract all users from database
             
-    #         # Find the city in the database and call the delete
-    #         if city in users:
-    #           user.delete()
+            # Find the city in the database and call the delete
+            for airport in airports:
+                if airport.city == city:
+                    airport.delete()
+                    return
             
-    #         # delete operation does not return any value
-    #         return
+            # delete operation does not return any value
+            return {'message': f' {city} is not in database'}, 210
+
         
     # building RESTapi endpoint
     api.add_resource(_Create, '/create')
     api.add_resource(_Read, '/')
-    # api.add_resource(_Delete, '/delete')
+    api.add_resource(_Delete, '/delete')
