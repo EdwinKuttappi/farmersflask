@@ -23,9 +23,9 @@ class AirportPostAPI(Resource):
             uo = AirportPost(city=city, airport=airport)
             
             ''' #2: Key Code block to add user to database '''
-            # create user in database
+            # create entry in database
             user = uo.create()
-            # success returns json of user
+            # success returns json of entry
             if user:
                 return jsonify(user.read())
             # failure returns error
@@ -33,7 +33,7 @@ class AirportPostAPI(Resource):
 
     class _Read(Resource):
         def get(self):
-            users = AirportPost.query.all()    # read/extract all users from database
+            users = AirportPost.query.all()    # read/extract all entries from database
             json_ready = [user.read() for user in users]  # prepare output in json
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
 
