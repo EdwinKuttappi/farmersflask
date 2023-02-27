@@ -4,7 +4,7 @@ import json
 from __init__ import app, db
 from sqlalchemy.exc import IntegrityError
 
-class AirportPost(db.Model):
+class MapsPost(db.Model):
     __tablename__ = 'mapspost'  # table name is plural, class name is singular
 
     # Define the User schema with "vars" from object
@@ -20,22 +20,22 @@ class AirportPost(db.Model):
     # a name getter method, extracts name from object
     @property
     def city(self):
-        return self._city
+        return self._location1
     
     # a setter function, allows name to be updated after initial object creation
     @city.setter
-    def city(self, city):
-        self._city = city
+    def city(self, location1):
+        self._location1 = location1
     
     # a getter method, extracts email from object
     @property
     def airport(self):
-        return self._airport
+        return self._location2
     
     # a setter function, allows name to be updated after initial object creation
     @airport.setter
-    def uid(self, airport):
-        self._airport = airport
+    def uid(self, location2):
+        self._location2 = location2
     
     # output content using str(object) in human readable form, uses getter
     # output content using json dumps, this is ready for API response
@@ -58,19 +58,19 @@ class AirportPost(db.Model):
     # returns dictionary
     def read(self):
         return {
-            "city": self.city,
-            "airport": self.airport
+            "location1": self.location1,
+            "location2": self.location2
         }
     
 
     # CRUD update: updates user name, password, phone
     # returns self
-    def update(self, city="", airport=""):
+    def update(self, location1="", location2=""):
         """only updates values with length"""
-        if len(city) > 0:
-            self.city = city
-        if len(airport) > 0:
-            self.airport = airport
+        if len(location1) > 0:
+            self.location1 = location1
+        if len(location2) > 0:
+            self.location2 = location2
         db.session.commit()
         return self
 
@@ -92,8 +92,8 @@ def initUsers():
         
         db.create_all()
         """Tester data for table"""
-        u1 = AirportPost(city="Paris", airport="Paris-Le Bourget")
-        u2 = AirportPost(city="Berlin", airport="Berlin-Tegel")
+        u1 = MapsPost(location1="Paris", location2="Paris-Le Bourget")
+        u2 = MapsPost(location1="Berlin", location2="Berlin-Tegel")
 
         users = [u1, u2]
 
