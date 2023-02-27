@@ -1,21 +1,21 @@
 """ database dependencies to support sqliteDB examples """
-
+import os
 import json
 from __init__ import app, db
 from sqlalchemy.exc import IntegrityError
 
 class AirportPost(db.Model):
-    __tablename__ = 'airportposts'  # table name is plural, class name is singular
+    __tablename__ = 'mapspost'  # table name is plural, class name is singular
 
     # Define the User schema with "vars" from object
     id = db.Column(db.Integer, primary_key=True)
-    _city = db.Column(db.String(255), unique=True, nullable=False)
-    _airport = db.Column(db.String(255), unique=False, nullable=False)
+    _location1 = db.Column(db.String(255), unique=True, nullable=False) # _city
+    _location2 = db.Column(db.String(255), unique=False, nullable=False) # _airport
     
     # constructor of a User object, initializes the instance variables within object (self)
-    def __init__(self, city, airport):
-        self._city = city    # variables with self prefix become part of the object, 
-        self._airport = airport
+    def __init__(self, location1, location2):
+        self._location1 = location1 # _city
+        self._location2 = location2 # _airport
 
     # a name getter method, extracts name from object
     @property
