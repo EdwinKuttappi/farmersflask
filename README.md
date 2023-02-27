@@ -9,4 +9,7 @@ Supports get, post, delete, and put(only for likes, which is represented by imag
 - "text": 2 to 800 character review of said destination, also submitted by users on the frontend
 - "imageURL": Not actually an image, I changed it far into development - might fix it later if I have time. Holds an integer to represent a like count for each post
 
+### Find Maps for Location - Edwin's Feature
+- "title": 
+
 NOTE: Put functions abnormally. You can only change imageURL/likes and whatever int is inputted changes the likes rather than set them for ease of development on the frontend
