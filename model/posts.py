@@ -175,14 +175,15 @@ class User(db.Model):
 
     # CRUD update: updates user name, password, phone
     # returns self
-    def update(self, name="", uid="", password=""):
+
+    def update(self, like):
         """only updates values with length"""
-        if len(name) > 0:
-            self.name = name
-        if len(uid) > 0:
-            self.uid = uid
-        if len(password) > 0:
-            self.set_password(password)
+        if like:
+            self.imageURL += '1'
+        else: 
+            self.imageURL = self.imageURL[:-1]
+
+        db.session.update(self)
         db.session.commit()
         return self
 

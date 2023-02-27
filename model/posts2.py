@@ -6,7 +6,6 @@ import json
 
 from __init__ import app, db
 from sqlalchemy.exc import IntegrityError
-from werkzeug.security import generate_password_hash, check_password_hash
 
 
 ''' Tutorial: https://www.sqlalchemy.org/library.html#tutorials, try to get into Python shell and follow along '''
@@ -197,127 +196,32 @@ class User(db.Model):
 """Database Creation and Testing """
 
 
-
-# Colin Backend - No touch por favor
-
-
-# initializes the application
-if __name__ == "__main__":
-    app.run()
-
-
-
-
-class FdPost(db.Model):
-    __tablename__ = 'fdposts3'  # table name is plural, class name is singular
-
-    # Define the User schema with "vars" from object
-    id = db.Column(db.Integer, primary_key=True)
-    _title = db.Column(db.String(255), unique=True, nullable=False)
-    _text = db.Column(db.String(255), unique=False, nullable=False)
-    _imageURL = db.Column(db.Integer, unique=False, nullable=False)
-
-    # Constructor of a FdPost object, initializes the instance variables within object (self)
-    def __init__(self, title, text, imageURL):
-        self._title = title    # variables with self prefix become part of the object,
-        self._text = text
-        self._imageURL = imageURL
-
-    # A name getter method, extracts name from object
-    @property
-    def title(self):
-        return self._title
-  
-    # A setter function, allows name to be updated after initial object creation
-    @title.setter
-    def title(self, title):
-        self._title = title
-  
-    # A getter method, extracts text from object
-    @property
-    def text(self):
-        return self._text
-  
-    # A setter function, allows text to be updated after initial object creation
-    @text.setter
-    def text(self, text):
-        self._text = text
-  
-    # A getter method, extracts imageURL from object
-    @property
-    def imageURL(self):
-        return self._imageURL
-  
-    # A setter function, allows imageURL to be updated after initial object creation
-    @imageURL.setter
-    def imageURL(self, imageURL):
-        self._imageURL = imageURL
-
-    # Output content using str(object) in human readable form, uses getter
-    # Output content using json dumps, this is ready for API response
-    def __str__(self):
-        return json.dumps(self.read())
-
-    # CRUD create/add a new record to the table
-    # Returns self or None on error
-    def create(self):
-        try:
-            # Creates a FdPost object from FdPost(db.Model) class, passes initializers
-            db.session.add(self)  # add prepares to persist FdPost object to FdPosts table
-            db.session.commit()  # SqlAlchemy "unit of work pattern" requires a manual commit
-            return self
-        except IntegrityError:
-            db.session.remove()
-            return None
-
-    # CRUD read converts self to dictionary
-    # Returns dictionary
-    def read(self):
-        return {
-            "id": self.id,
-            "title": self.title,
-            "text": self.text,
-            "imageURL": self.imageURL
-        }
-  
-
-    # CRUD update: updates imageURL
-    # Returns self
-    def update(self, imageURL = 0):
-        """Only updates values with length"""
-        self.imageURL = self.imageURL + imageURL
-        db.session.commit()
-        return self
-
-    # CRUD delete: remove self
-    # None
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-        return None
-
-
 # Builds working data for testing
 def initUsers():
-   with app.app_context():
-       """Create database and tables"""
-       db.init_app(app)
-       db.create_all()
-       """Tester data for table"""
-       u1 = FdPost(title="New York City", text="There's a lot of big big buildings here. Really liked the Empire State Building. I also enjoyed the bay, but the water was pretty cold. There were also a lot of big stores and tourist attractions. I would go again and it I do recommend it", imageURL = 0)
-       u2 = FdPost(title="Bahamas", text="Very fun islands. I would recommend going to Nassau. It was a really good experience overall.", imageURL=0)
+    with app.app_context():
+        """Create database and tables"""
+        db.init_app(app)
+        db.create_all()
+        """Tester data for table"""
+        u1 = User(name='Thomas Edison', uid='toby', password='123toby', dob=date(1847, 2, 11))
+        u2 = User(name='Nicholas Tesla', uid='niko', password='123niko')
+        u3 = User(name='Alexander Graham Bell', uid='lex', password='123lex')
+        u4 = User(name='Eli Whitney', uid='whit', password='123whit')
+        u5 = User(name='John Mortensen', uid='jm1021', dob=date(1959, 10, 21))
 
+        users = [u1, u2, u3, u4, u5]
 
-       users = [u1, u2]
-
-
-       """Builds sample user/note(s) data"""
-       for user in users:
-           try:
-               user.create()
-           except IntegrityError:
-               '''fails with bad or duplicate data'''
-               db.session.remove()
-               print(f"Duplicate or error: {user.uid}")
-          
-
+        """Builds sample user/note(s) data"""
+        for user in users:
+            try:
+                '''add a few 1 to 4 notes per user'''
+                for num in range(randrange(1, 4)):
+                    note = "#### " + user.name + " note " + str(num) + ". \n Generated by test data."
+                    user.posts.append(Post(id=user.id, note=note, image='ncs_logo.png'))
+                '''add user/post data to table'''
+                user.create()
+            except IntegrityError:
+                '''fails with bad or duplicate data'''
+                db.session.remove()
+                print(f"Records exist, duplicate email, or error: {user.uid}")
+            
