@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_restful import Api, Resource # used for REST API building
 
-from model.maps import Maps
+from model.mapsmodel import MapsPost
 
 maps_api = Blueprint('maps_api', __name__,
                    url_prefix='/api/maps')
@@ -9,7 +9,7 @@ maps_api = Blueprint('maps_api', __name__,
 # API docs https://flask-restful.readthedocs.io/en/latest/api.html
 mapsapi = Api(maps_api)
 
-class FdPostAPI(Resource):        
+class MapsPostAPI(Resource):        
     class _Create(Resource):
         def post(self):
             ''' Read data for json body '''
@@ -17,20 +17,10 @@ class FdPostAPI(Resource):
             
             ''' Avoid garbage in, error checking '''
             # validate name
-            title = body.get('title')
-            if title is None or len(title) < 2 or len(title) > 30:
+            location = body.get('location')
+            if location is None or len(location) < 2 or len(location) > 30:
                 return {'message': f'Name is missing, or is less than 2 characters, or is more than 30 characters'}, 210
-            # validate uid
-            text = body.get('text')
-            if text is None or len(text) < 2 or len(text) > 800:
-                return {'message': f'Text is missing, or is less than 2 characters, or is more than 800 characters'}, 210
             
-            imageURL = body.get('imageURL')
-            if imageURL is None:
-                return {'message': f'imageURL is missing'}, 210
-            # look for password and dob
-         
-
             ''' #1: Key code block, setup USER OBJECT '''
             uo = mapsPost(title=title, text=text, imageURL=imageURL)
             
