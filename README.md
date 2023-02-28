@@ -10,6 +10,8 @@ Supports get, post, delete, and put(only for likes, which is represented by imag
 - "imageURL": Not actually an image, I changed it far into development - might fix it later if I have time. Holds an integer to represent a like count for each post
 
 ### Find Maps for Location - Edwin's Feature
-- "title": 
+
+- "location1": 
+- "location2":
 
 NOTE: Put functions abnormally. You can only change imageURL/likes and whatever int is inputted changes the likes rather than set them for ease of development on the frontend
