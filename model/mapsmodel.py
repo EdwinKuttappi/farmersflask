@@ -86,7 +86,7 @@ class MapsPost(db.Model):
 
 
 # Builds working data for testing
-def initUsers():
+def initMaps():
     with app.app_context():
         """Create database and tables"""
         
